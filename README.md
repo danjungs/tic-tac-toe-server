@@ -15,8 +15,8 @@ Foi construído com node.js, express e socket.io
   ```  
 - Executar o projeto:
   ```
-    npm start
-    ``` 
+  npm start
+  ``` 
 
 Dessa forma o projeto do backend estará rodando na porta 4000.
 
