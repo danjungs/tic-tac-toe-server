@@ -32,7 +32,6 @@ export const appIO = (server) => {
           }
           roomInfo.players.push(newPlayer);
           io.in(room).emit('begin_game', roomInfo.players);
-          console.log(roomInfo.players)
           return;
         }
 
@@ -61,10 +60,28 @@ export const appIO = (server) => {
 
     socket.on('make_move', data => {
       const { room } = data;
-      
+
       // TODO: VALIDATE MOVE      
 
       io.in(room).emit('move_made', data);
+    })
+
+    socket.on('reset_request', data => {
+      const { room, symbol } = data;
+      if (!room || !symbol) {
+        return;
+      }
+      const roomInfo = getRoomInfo(room);
+      if (!roomInfo) {
+        return;
+      }
+      const { resetRequest }  = roomInfo
+      if (resetRequest && resetRequest != symbol) {
+        delete roomInfo.resetRequest;
+        io.in(room).emit('reset_game', roomInfo);
+        return;
+      }
+      roomInfo.resetRequest = symbol;
     })
   });
 
